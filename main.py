@@ -1,24 +1,64 @@
-from Funciones_Notas import *
+import student as stu
+import grades as gra
+import reports as rep
 
-while True:
-    student = readstudents()
+
+def main():
 
     while True:
-        op = ChooseOp()
 
-        if op == 1:
-            registerGrade()
+        studentName = stu.leerEstudiante()
 
-        elif op == 2:
-            if len(grades) > 0:
-                print("\nEstudiante:", student)
-                showGrades()
+        print("Nombre registrado:", studentName)
+
+        while True:
+
+            option = stu.elegirOpcion()
+
+            if option == 1:
+
+                stu.registrarNota()
+
+            elif option == 2:
+
+                if len(stu.grades) == 0:
+                    print("\nDebe registrar al menos una asignatura.")
+                    continue
+
+                average = gra.calcularPromedio(stu.grades)
+
+                performance = gra.nivelRendimiento(average)
+
+                rep.mostrarResultado(
+                    studentName,
+                    stu.subjects,
+                    stu.grades,
+                    average,
+                    performance
+                )
+
                 break
+
+        while True:
+
+            anotherStudent = input(
+                "\n¿Desea registrar otro estudiante? (s/n): "
+            ).lower()
+
+            if anotherStudent == "s":
+
+                stu.limpiarDatos()
+                print("\n--- REGISTRO DE NUEVO ESTUDIANTE ---")
+                break
+
+            elif anotherStudent == "n":
+
+                print("\nGracias por utilizar el programa.")
+                return
+
             else:
-                print("Debe registrar al menos una calificacion.")
 
-    answer = input("\n¿Desea registrar otro estudiante? (s/n): ")
+                print("Ingrese solamente 's' para sí o 'n' para no.")
 
-    if answer.lower() == "n":
-        print("\nGracias por utilizar el programa.")
-        break
+
+main()
